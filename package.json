@@ -3,16 +3,34 @@
   "scripts": {
     "start": "start-storybook",
     "test": "jest --colors",
-    "lint": "tslint \"src/**/*.{ts,tsx}\""
+    "lint": "eslint \"src/**/*.{js,jsx,mjs,ts,tsx}\" && tslint \"src/**/*.{ts,tsx}\""
   },
   "jest": {
     "preset": "react-zeroconfig"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && npm run test"
+      "pre-commit": "markdown-source-import \"{,!(node_modules)/**/}*.md\" --git-add && lint-staged"
     }
   },
+  "lint-staged": {
+    "src/**/*.{js,jsx,mjs}": [
+      "eslint",
+      "jest --colors --findRelatedTests"
+    ],
+    "src/**/*.{ts,tsx}": [
+      "eslint",
+      "tslint",
+      "jest --colors --findRelatedTests"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "eslintIgnore": [
+    "src/**/public/*",
+    "src/**/*.d.ts"
+  ],
   "browserslist": {
     "development": [
       "last 1 chrome version",
@@ -21,19 +39,25 @@
     ]
   },
   "dependencies": {
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
   },
   "devDependencies": {
-    "@storybook/react": "^5.1.1",
-    "@types/jest": "^24.0.13",
-    "@types/react": "^16.8.19",
-    "@types/react-dom": "^16.8.4",
+    "@storybook/addon-storysource": "^5.1.11",
+    "@storybook/react": "^5.1.11",
+    "@types/eslint": "^6.1.1",
+    "@types/jest": "^24.0.18",
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.9.0",
     "@types/storybook__react": "^4.0.2",
-    "husky": "^2.4.0",
-    "jest": "^24.8.0",
-    "react-zeroconfig": "^3.3.0-alpha.1",
-    "tslint": "^5.17.0",
+    "eslint": "^6.2.2",
+    "eslint-config-react-app": "^5.0.1",
+    "husky": "^3.0.4",
+    "jest": "^24.9.0",
+    "lint-staged": "^9.2.3",
+    "markdown-source-import": "^1.2.0",
+    "react-zeroconfig": "^3.15.0",
+    "tslint": "^5.19.0",
     "tslint-ssen-rules": "^1.3.0"
   }
 }
